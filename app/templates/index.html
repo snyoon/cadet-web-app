@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Welcome, {{ current_user.usertype }} {{ current_user.name }}!</h1>
+    {% if current_user.usertype == 'Officer' %}
+        <div> OFficer Div</div>
+    {% else %}
+        <div> cadet Div </div>
+    {% endif %}
+
+{% endblock %}s
