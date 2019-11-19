@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(64))
     usertype = db.Column(db.String(64))
     uniformscores = db.relationship('UniformScore', backref='cadet', lazy='dynamic')
+    performance_scores = db.relationship('PerformanceCheckScores', backref='cadet', lazy='dynamic')
 
     def __repr__(self):
         return '<User {}>'.format(self.name)

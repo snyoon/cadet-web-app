@@ -6,7 +6,6 @@ from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 
-
 @app.route('/')
 @app.route('/index')
 @login_required
@@ -33,10 +32,12 @@ def login():
         return redirect(next_page)
     return render_template('login.html', title='Sign In', form=form)
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('index'))
+
 
 @app.route('/cadet/<username>')
 @login_required
@@ -44,4 +45,6 @@ def cadet(username):
     user = User.query.filter_by(username=username).first_or_404()
     if user.usertype == 'Cadet':
         uniformScoresList = helper.makeuniformscorelist(user.uniformscores)
-
+        performance_score_list = helper.performance_score_list(user.performance_scores)
+        return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
+                               performance_score_list=performance_score_list)
