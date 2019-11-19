@@ -10,8 +10,8 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @login_required
 def index():
-    user = {'username': 'Miguel'}
     userid = current_user.get_id()
+    print("!!!!!!!!!!!")
     return render_template('index.html', title='Home Page')
 
 
@@ -39,12 +39,21 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/cadet/<username>')
+@app.route('/cadet')
 @login_required
 def cadet(username):
-    user = User.query.filter_by(username=username).first_or_404()
-    if user.usertype == 'Cadet':
-        uniformScoresList = helper.makeuniformscorelist(user.uniformscores)
-        performance_score_list = helper.performance_score_list(user.performance_scores)
-        return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
-                               performance_score_list=performance_score_list)
+    # print("@@@@@@@@@@@@@@")
+    # user = User.query.filter_by(username=username).first_or_404()
+    # print("@@@@@@@@@@@@@@")
+    # if user.usertype == 'Cadet':
+    #     uniformScoresList = helper.makeuniformscorelist(user.uniformscores)
+    #     performance_score_list = helper.performance_score_list(user.performance_scores)
+    #     return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
+    #                            performance_score_list=performance_score_list)
+    # else:
+    #     uniformScoresList = helper.makeuniformscorelist(user.uniformscores)
+    #     performance_score_list = helper.performance_score_list(user.performance_scores)
+    #     return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
+    #                            performance_score_list=performance_score_list)
+    print("@@@@@@@@@@@@")
+    return render_template('cadet.html', title='Home Page')
