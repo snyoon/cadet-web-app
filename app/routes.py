@@ -1,13 +1,14 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, helper
 from app.forms import LoginForm
-from app.models import User
+from app.models import User, PerformanceCheckScores, UniformScores
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
+from app.helper import make_uniform_score_list
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
     userid = current_user.get_id()
@@ -39,21 +40,28 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/cadet')
+@app.route('/cadet', methods=['GET', 'POST'])
 @login_required
-def cadet(username):
-    # print("@@@@@@@@@@@@@@")
-    # user = User.query.filter_by(username=username).first_or_404()
-    # print("@@@@@@@@@@@@@@")
-    # if user.usertype == 'Cadet':
-    #     uniformScoresList = helper.makeuniformscorelist(user.uniformscores)
-    #     performance_score_list = helper.performance_score_list(user.performance_scores)
-    #     return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
-    #                            performance_score_list=performance_score_list)
-    # else:
-    #     uniformScoresList = helper.makeuniformscorelist(user.uniformscores)
-    #     performance_score_list = helper.performance_score_list(user.performance_scores)
-    #     return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
-    #                            performance_score_list=performance_score_list)
-    print("@@@@@@@@@@@@")
-    return render_template('cadet.html', title='Home Page')
+def cadet():
+    username = current_user.get_id()
+    user = User.query.filter_by(id=username).first_or_404()
+    if user.usertype.lower() == 'cadet':
+        uniformScoresListAll = helper.make_uniform_score_list(user.uniformscores)
+        uniformScoresList = uniformScoresListAll
+        performance_score_list = helper.performance_score_list(user.performance_scores)
+        return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
+                               performance_score_list=performance_score_list)
+    else:
+        # uniformScoresList = helper.make_uniform_score_list(user.uniformscores)
+        # performance_score_list = helper.performance_score_list(user.performance_scores)
+        # return render_template('cadet.html', title=str(user.name), uniformScoresList=uniformScoresList,
+        #                        performance_score_list=performance_score_list)
+        return render_template('index.html', title='Home Page')
+
+
+@app.route('/officer', methods=['GET', 'POST'])
+@login_required
+def officer():
+    username = current_user.get_id()
+    user = User.query.filter_by(id=username).first_or_404()
+    return render_template('officer.html', title='Admin', name=username)

@@ -9,7 +9,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(64))
     usertype = db.Column(db.String(64))
-    uniformscores = db.relationship('UniformScore', backref='cadet', lazy='dynamic')
+    uniformscores = db.relationship('UniformScores', backref='cadet', lazy='dynamic')
     performance_scores = db.relationship('PerformanceCheckScores', backref='cadet', lazy='dynamic')
 
     def __repr__(self):
@@ -22,13 +22,13 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
     def set_usertype(self, accounttype):
-        if (accounttype == 'o'):
+        if accounttype == 'o':
             self.usertype = 'Officer'
         else:
             self.usertype = 'Cadet'
 
 
-class UniformScore(db.Model):
+class UniformScores(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     year = db.Column(db.Integer)
     week1score = db.Column(db.Integer, default=0)
@@ -73,7 +73,7 @@ class UniformScore(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<UniformScores {}>'.format(self.body)
+        return '<UniformScores {}>'.format(self.year)
 
     def set_score(self, week, score):
         appendedWord = 'week' + str(week) + 'score'
@@ -94,7 +94,7 @@ class PerformanceCheckScores(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<PerformanceCheckSCores {}>'.format(self.body)
+        return '<PerformanceCheckScores {}>'.format(self.year)
 
     def set_score(self, week, score):
         appendedWord = 'score' + str(week)

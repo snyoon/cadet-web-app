@@ -3,10 +3,11 @@
 {% block content %}
     <h1>Welcome, {{ current_user.usertype }} {{ current_user.name }}!</h1>
     {% if current_user.usertype == 'Officer' %}
-        <div> OFficer Div</div>
+        <div> officer div</div>
+        <a href
     {% else %}
-        <div> cadet Div </div>
-        <a href="{{ url_for('cadet') }}">Check your marks</a>
+        <div> cadet div </div>
+        <a href="{{ url_for('cadet') }}">Check your year</a>
     {% endif %}
 
 {% endblock %}s

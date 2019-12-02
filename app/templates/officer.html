@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Welcome, {{ current_user.usertype }} {{ current_user.name }}!</h1>
+
+    <div id="cadet add">
+    <a href="{{ url_for('add_user') }}">Add a new user</a>
+    </div>
+    <div id="uni add">
+    <a href="{{ url_for('add_uni') }}">Give Uniform Score</a>
+    </div>
+    <div id="perf add">
+    <a href="{{ url_for('add_perf') }}">Give a Performance Scorer</a>
+    </div>
+
+{% endblock %}
