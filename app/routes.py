@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
-from app import app, helper
-from app.forms import LoginForm
+from app import app, helper, db
+from app.forms import LoginForm, UniformScoreSubmission
 from app.models import User, PerformanceCheckScores, UniformScores
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
@@ -12,7 +12,6 @@ from app.helper import make_uniform_score_list
 @login_required
 def index():
     userid = current_user.get_id()
-    print("!!!!!!!!!!!")
     return render_template('index.html', title='Home Page')
 
 
@@ -65,3 +64,24 @@ def officer():
     username = current_user.get_id()
     user = User.query.filter_by(id=username).first_or_404()
     return render_template('officer.html', title='Admin', name=username)
+
+
+@app.route('/adduniformscore', methods=['GET','POST'])
+@login_required
+def add_uni():
+    username = current_user.get_id()
+    user = User.query.filter_by(id=username).first_or_404()
+    if user.usertype.lower() == 'cadet':
+        return render_template('index.html', title='Home Page')
+    else:
+        form = UniformScoreSubmission()
+        if form.validate_on_submit():
+            user = User.query.filter_by(username=form.cadet_last_name.data).first()
+            uniform_score = user.uniformscores[0]
+            uniform_score.set_score(form.week.data, form.score.data)
+            db.session.commit()
+            next_page = request.args.get('next')
+            if not next_page or url_parse(next_page).netloc != '':
+                next_page = url_for('index')
+            return redirect(next_page)
+        return render_template('adduniformscore.html', title='Record Uniform Score', form=form)

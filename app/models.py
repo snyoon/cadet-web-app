@@ -76,8 +76,9 @@ class UniformScores(db.Model):
         return '<UniformScores {}>'.format(self.year)
 
     def set_score(self, week, score):
-        appendedWord = 'week' + str(week) + 'score'
-        setattr(self, appendedWord, score)
+        print(self)
+        appendedWord = 'week' + week + 'score'
+        setattr(self, appendedWord, int(score))
 
 
 class PerformanceCheckScores(db.Model):
@@ -97,7 +98,7 @@ class PerformanceCheckScores(db.Model):
         return '<PerformanceCheckScores {}>'.format(self.year)
 
     def set_score(self, week, score):
-        appendedWord = 'score' + str(week)
+        appendedWord = 'week' + week + 'score'
         setattr(self, appendedWord, score)
 
 

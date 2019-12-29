@@ -11,7 +11,8 @@ class LoginForm(FlaskForm):
 class UniformScoreSubmission(FlaskForm):
     week = StringField('Week', validators=[DataRequired()])
     score = StringField('Score', validators=[DataRequired()])
-    cadet = StringField('Cadet', validators=[DataRequired()])
+    cadet_last_name = StringField('Cadet Last Name', validators=[DataRequired()])
+    cadet_first_name = StringField('Cadet First Name', validators=[DataRequired()])
     submit = SubmitField('Enter Score')
 
 class PerformanceScoreForm(FlaskForm):

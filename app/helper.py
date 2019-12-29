@@ -9,7 +9,6 @@ def make_uniform_score_list(uniformscore):
     return_list = []
     for x in range(1, 40):
         atr_string = 'week' + str(x) + 'score'
-        print(atr_string)
         return_list.append(getattr(recent_scores, atr_string))
     return return_list
 
