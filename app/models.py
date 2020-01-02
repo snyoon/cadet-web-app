@@ -97,9 +97,9 @@ class PerformanceCheckScores(db.Model):
     def __repr__(self):
         return '<PerformanceCheckScores {}>'.format(self.year)
 
-    def set_score(self, week, score):
-        appendedWord = 'week' + week + 'score'
-        setattr(self, appendedWord, score)
+    def set_score(self, score_type, score):
+        appendedWord = score_type
+        setattr(self, appendedWord, int(score))
 
 
 @login.user_loader
